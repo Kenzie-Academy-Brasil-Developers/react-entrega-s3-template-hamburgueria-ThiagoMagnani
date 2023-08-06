@@ -21,19 +21,18 @@ export const Header = ({ setIsOpen, setSearchValue, cartItemCount }) => {
             <span className={stylesHeader.numCart}>{cartItemCount}</span>
           </button>
         </div>
-          <form className={stylesHeader.form} onSubmit={handleSearch}>
-            <input
-              className={stylesHeader.boxTextSearch}
-              type="text"
-              value={value}
-              placeholder="Digitar Pesquisa"
-              onChange={(e) => setValue(e.target.value)}
-            />
-            <button className={stylesHeader.buttonSearch} type="submit">
-              <MdSearch size={16} />
-            </button>
-          </form>
-        
+        <form className={stylesHeader.form} onSubmit={handleSearch}>
+          <input
+            className={stylesHeader.boxTextSearch}
+            type="text"
+            value={value}
+            placeholder="Digitar Pesquisa"
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <button className={stylesHeader.buttonSearch} type="submit">
+            <MdSearch size={16} />
+          </button>
+        </form>
       </div>
     </header>
   );
