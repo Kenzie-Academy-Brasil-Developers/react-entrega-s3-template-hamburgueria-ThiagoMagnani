@@ -1,0 +1,48 @@
+.listModal {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 1em;
+  width: 90%;
+  padding: 0;
+}
+
+.itens {
+  display: flex;
+  justify-content: space-between;
+  height: 4em;
+}
+
+.itensContainner {
+  display: flex;
+  width: 100%;
+  gap: 1em;
+}
+
+.buttonRemove {
+  border: none;
+  background-color: transparent;
+  color: #bdbdbd;
+}
+
+.imgItensModal {
+  background-color: #e0e0e0;
+  border-radius: 5px;
+}
+
+.priceProduct {
+  color: #a8a8a8;
+}
+
+.itemBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+.listSpace {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,0 +1,26 @@
+.headerModal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #27ae60;
+  height: 2em;
+  padding: 0 0.4em 0 1em;
+}
+
+.closeButton {
+  border: none;
+  background-color: transparent;
+  width: 2.5em;
+  color: #ffffff80;
+  display: flex;
+}
+
+.closeButton:hover {
+  color: #fff;
+}
+
+.title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.2em;
+}

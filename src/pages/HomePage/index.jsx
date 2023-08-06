@@ -1,26 +1,99 @@
-import { useState } from "react";
-import { CartModal } from "../../components/CartModal";
+import { useEffect, useState } from "react";
+import { CartModal } from "../../components/Modal";
 import { Header } from "../../components/Header";
 import { ProductList } from "../../components/ProductList";
 
 export const HomePage = () => {
-   const [productList, setProductList] = useState([]);
-   const [cartList, setCartList] = useState([]);
+  const [productList, setProductList] = useState([]);
+  const [cartList, setCartList] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredProductList, setFilteredProductList] = useState([]);
+  const [cartItemCount, setCartItemCount] = useState(0);
+  const getCartItemCount = () => {
+    return cartList.length;
+  };
+  const updateCartItemCount = () => {
+    setCartItemCount(getCartItemCount());
+  };
 
-   // useEffect montagem - carrega os produtos da API e joga em productList
-   // useEffect atualização - salva os produtos no localStorage (carregar no estado)
-   // adição, exclusão, e exclusão geral do carrinho
-   // renderizações condições e o estado para exibir ou não o carrinho
-   // filtro de busca
-   // estilizar tudo com sass de forma responsiva
+  const addToCart = (product) => {
+    setCartList((prevCard) => [...prevCard, product]);
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    storedCart.push(product);
+    localStorage.setItem("cart", JSON.stringify(storedCart));
+  };
 
-   return (
-      <>
-         <Header />
-         <main>
-            <ProductList productList={productList} />
-            <CartModal cartList={cartList} />
-         </main>
-      </>
-   );
+  const getStorage = () => {
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCartList(storedCart);
+  };
+
+  useEffect(() => {
+    getStorage();
+    updateCartItemCount();
+  }, []);
+
+  useEffect(() => {
+    updateCartItemCount();
+  }, [cartList]);
+
+  useEffect(() => {
+    const getCard = async () => {
+      const response = await fetch(
+        "https://hamburgueria-kenzie-json-serve.herokuapp.com/products"
+      );
+      const json = await response.json();
+      setProductList(json);
+    };
+    getCard();
+  }, []);
+
+  const removeItemCart = (product) => {
+    setCartList((prevCard) =>
+      prevCard.filter((item) => item.id !== product.id)
+    );
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const updatedCart = storedCart.filter((item) => item.id !== product.id);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
+  const clearLocal = () => {
+    setCartList([]);
+    localStorage.removeItem("cart");
+  };
+
+  const filterProducts = (productList, searchValue) => {
+    return productList.filter((product) => {
+      const productName = product.name.toLowerCase();
+      return productName.includes(searchValue.toLowerCase());
+    });
+  };
+
+  useEffect(() => {
+    const filteredList = filterProducts(productList, searchValue);
+    setFilteredProductList(filteredList);
+  }, [productList, searchValue]);
+
+  return (
+    <>
+      <Header
+        setIsOpen={setIsOpen}
+        setSearchValue={setSearchValue}
+        cartItemCount={cartItemCount}
+      />
+      <main>
+        <ProductList productList={filteredProductList} addToCart={addToCart} />
+        {isOpen ? (
+          <CartModal
+            cartList={cartList}
+            setIsOpen={setIsOpen}
+            setCartList={setCartList}
+            removeItemCart={removeItemCart}
+            clearLocal={clearLocal}
+          />
+        ) : null}
+      </main>
+    </>
+  );
 };
