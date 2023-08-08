@@ -5,11 +5,13 @@ export const ProductList = ({ productList, addToCart }) => {
   return (
     <ul className={style.list}>
       {productList.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={{ ...product, id: product.id || nextProductId }}
-          addToCart={addToCart}
-        />
+        <div>
+          <ProductCard
+            key={product.id}
+            product={product}
+            addToCart={addToCart}
+          />
+        </div>
       ))}
     </ul>
   );

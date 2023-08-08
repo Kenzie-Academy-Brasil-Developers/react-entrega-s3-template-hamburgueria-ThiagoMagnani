@@ -18,10 +18,12 @@ export const HomePage = () => {
   };
 
   const addToCart = (product) => {
+    const isProductInCart = cartList.some((item) => item.id === product.id);
+    if (isProductInCart) {
+      return;
+    }
     setCartList((prevCard) => [...prevCard, product]);
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    storedCart.push(product);
-    localStorage.setItem("cart", JSON.stringify(storedCart));
+    localStorage.setItem("cart", JSON.stringify([...cartList, product]));
   };
 
   const getStorage = () => {
@@ -53,9 +55,10 @@ export const HomePage = () => {
     setCartList((prevCard) =>
       prevCard.filter((item) => item.id !== product.id)
     );
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const updatedCart = storedCart.filter((item) => item.id !== product.id);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(cartList.filter((item) => item.id !== product.id))
+    );
   };
 
   const clearLocal = () => {
